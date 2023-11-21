@@ -37,15 +37,29 @@ defmodule Ship.Systems.ClientEventHandler do
     YPosition.add(player, Enum.random(1..100))
     XVelocity.add(player, 0)
     YVelocity.add(player, 0)
-    ImageFile.add(player, "player_ship.svg")
+    ImageFile.add(player, "player_ship_right.svg")
     PlayerSpawned.add(player)
   end
 
   # Note Y movement will use screen position (increasing Y goes south)
   defp process_one({player, {:move, :north}}), do: YVelocity.update(player, -1)
   defp process_one({player, {:move, :south}}), do: YVelocity.update(player, 1)
-  defp process_one({player, {:move, :east}}), do: XVelocity.update(player, 1)
-  defp process_one({player, {:move, :west}}), do: XVelocity.update(player, -1)
+
+  defp process_one({player, {:move, :east}}) do
+    XVelocity.update(player, 1)
+
+    unless ImageFile.get(player) == "player_ship_right.svg" do
+      ImageFile.update(player, "player_ship_right.svg")
+    end
+  end
+
+  defp process_one({player, {:move, :west}}) do
+    XVelocity.update(player, -1)
+
+    unless ImageFile.get(player) == "player_ship_left.svg" do
+      ImageFile.update(player, "player_ship_left.svg")
+    end
+  end
 
   defp process_one({player, {:stop_move, :north}}), do: YVelocity.update(player, 0)
   defp process_one({player, {:stop_move, :south}}), do: YVelocity.update(player, 0)
