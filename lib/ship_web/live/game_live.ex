@@ -143,7 +143,7 @@ defmodule ShipWeb.GameLive do
     end
   end
 
-  def haasndle_event("keydown", %{"key" => key}, socket) do
+  def handle_event("keydown", %{"key" => key}, socket) do
     if MapSet.member?(socket.assigns.keys, key) do
       # Already holding this key - do nothing
       {:noreply, socket}
